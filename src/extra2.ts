@@ -29,19 +29,12 @@ const aluno = {
 
 const propriedades: string[] = [];
 
-for (const propriedade in aluno) {
-    if (aluno[propriedade] instanceof Object) {
-        for (const propriedadeInterna in aluno[propriedade])
-        {
-            propriedades.push(`${propriedade}.${propriedadeInterna}: ${aluno[propriedade][propriedadeInterna]}`);
-        }
-    }
-    else propriedades.push(`${propriedade}: ${aluno[propriedade]}`);
-}
+// Adicione seu código aqui 👇 
 
-for (let i=0; i < propriedades.length; i++){
-    console.log(`${i + 1}. ${propriedades[i]}`);
-}
+
+
+
+
 
 // Saída esperada:
 // 1. nome: Frida

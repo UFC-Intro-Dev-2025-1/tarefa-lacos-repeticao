@@ -9,15 +9,8 @@
 
 // Adicione seu código aqui 👇 
 
-function verificarNota(nome: string, nota: number): void {
-    if (nota > 70) {
-        console.log(`${nome}, você passou por média!`);
-    } else if (nota > 40 && nota <= 70) {
-        console.log(`${nome}, você está na AF.`);
-    } else {
-        console.log(`${nome}, infelizmente você está reprovado.`);
-    }
-}
+
+
 
 verificarNota('Frida', 100); //Frida, você passou por média!
 verificarNota('Pedro', 65); //Pedro, você está na AF.

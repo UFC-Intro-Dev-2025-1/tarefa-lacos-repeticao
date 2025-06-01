@@ -9,18 +9,7 @@
 
 // Adicione seu código aqui 👇 
 
-function verificarNotaSwitch(nome: string, nota: number): void {
-    switch (true) {
-        case nota > 70:
-            console.log(`${nome}, você passou por média!`);
-            break;
-        case nota > 40 && nota <= 70:
-            console.log(`${nome}, você está na AF.`);
-            break;
-        default:
-            console.log(`${nome}, infelizmente você está reprovado.`);
-    }
-}
+
 
 verificarNotaSwitch('Frida', 100); //Frida, você passou por média!
 verificarNotaSwitch('Pedro', 65); //Pedro, você está na AF.

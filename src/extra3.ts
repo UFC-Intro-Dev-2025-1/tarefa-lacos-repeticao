@@ -8,15 +8,10 @@
 // Use operadores lógicos: && (AND) e || (OR)
 
 import readlineSync from 'readline-sync';
-
 let respostaDoAmigo: string | null = null;
 
-do{
-    respostaDoAmigo = readlineSync.question('Você é meu amigo? ');
+// Adicione seu código aqui 👇 
 
-} while (respostaDoAmigo && respostaDoAmigo !== '0') 
-
-console.log("Falsy? Já imaginava... ¬¬ \n");
 
 
 
