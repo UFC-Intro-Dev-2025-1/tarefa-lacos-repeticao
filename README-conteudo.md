@@ -1,362 +1,327 @@
-# Funções
+# Estruturas de Controle e Iteração
 
 <!-- toc -->
 
--   [Definindo Funções](#definindo-funções)
-    -   [Declaração de Função](#declaração-de-função)
-    -   [Expressão de Função](#expressão-de-função)
-    -   [Função Construtora](#função-construtora)
--   [Chamando Funções](#chamando-funções)
--   [Escopo de Função e Closures](#escopo-de-função-e-closures)
--   [Objeto `arguments`](#objeto-arguments)
--   [Parâmetros de Função](#parâmetros-de-função)
--   [Funções de Seta (Arrow Functions)](#funções-de-seta-arrow-functions)
-    -   [Sintaxe](#sintaxe)
-    -   [Características](#características)
-    -   [Retornando Objetos Literais](#retornando-objetos-literais)
-    -   [Exemplos](#exemplos)
+-   [Definindo Estruturas de Controle](#definindo-estruturas-de-controle)
+    -   [Loop](#loop)
+    -   [Truthy e Falsy](#truthy-e-falsy)
+    -   [if...else](#ifelse)
+    -   [for](#for)
+    -   [for...in](#forin)
+    -   [while](#while)
+    -   [do...while](#dowhile)
+    -   [switch](#switch)
 -   [Referências](#referências)
 
-<!-- toc -->
+## Definindo Estruturas de Controle
 
-## Definindo Funções
+Um loop é uma estrutura que permite executar repetidamente um bloco de código enquanto uma condição é verdadeira. Exemplos incluem `for`, `while`, e `do...while`. [Leia mais](https://developer.mozilla.org/en-US/docs/Glossary/Loop).
 
-Funções são blocos de código reutilizáveis que realizam tarefas específicas.
+### Truthy e Falsy
 
-### Partes de uma função
+Valores em JavaScript podem ser considerados "truthy" ou "falsy" dependendo de como são avaliados em contextos booleanos.
 
-Uma função é composta por algumas partes principais:
+#### Valores Falsy
 
--   Palavra-chave **`function`**: Indica que se está definindo uma função.
--   **Nome da função**: É o nome que será usado para chamar a função.
--   **Parâmetros** (opcionais): São variáveis que recebem valores quando a função é chamada. São listados entre parênteses e separados por vírgulas.
--   **Corpo da função**: É o bloco de código entre chaves { } que define o que a função faz.
--   **Valor de retorno** (opcional): É o valor que a função retorna quando é chamada. Usualmente, é definido usando a palavra-chave `return`.
+Os valores abaixo são considerados "falsy", ou seja, são avaliados como `false` em contextos booleanos:
 
-Com estas partes, podemos definir uma função de várias maneiras. Veja os tópicos a seguir.
+| Valor       | Descrição              |
+| ----------- | ---------------------- |
+| `false`     | O valor booleano falso |
+| `0`         | O número zero          |
+| `-0`        | O número negativo zero |
+| `0n`        | O valor BigInt zero    |
+| `""`        | String vazia           |
+| `null`      | Valor nulo             |
+| `undefined` | Valor indefinido       |
+| `NaN`       | Not-a-Number           |
 
-### Declaração de Função
+#### Valores Truthy
 
-```javascript
-// JavaScript
-function saudar(nome) {
-  console.log(`Olá, ${nome}!`);
-}
-saudar('Frida')); // esta é a chamada da função, que faz com que ela seja executada
-```
+Qualquer valor que não seja "falsy" é considerado "truthy". Exemplos incluem:
 
-```typescript
-// TypeScript
-function saudar(nome: string): void {
-    console.log(`Olá, ${nome}!`);
-}
-saudar('Frida');
+-   Strings não vazias, como `"hello"`
+-   Números diferentes de zero, como `42` ou `-42`
+-   Objetos, como `{}` ou `[]`
+-   Funções, como `function() {}`
 
-// 'nome:string' significa que temos um parâmetro chamado nome do tipo string
-// 'function saudar(...):void' o void significa que a função não tem retorno.
-```
-
-> **Nota:** O tipo `void` em TypeScript é usado para indicar que uma função não retorna nenhum valor.
+Para verificar se um valor é "truthy" ou "falsy", você pode usar uma declaração `if`:
 
 ```typescript
-// TypeScript - mais um exemplo
-// nesse tanto os 2 parâmetros quanto o retorno são do tipo number
-function soma(a: number, b: number): number {
-    return a + b;
-}
-
-const resultado: number = soma(5, 3);
-console.log('Resultado da Soma:', resultado);
-```
-
-Se nenhum tipo de retorno for definido, o TypeScript tentará inferi-lo por meio dos tipos de variáveis ​​ou expressões retornadas.
-
-### Expressão de Função
-
-Embora a declaração de função acima seja sintaticamente uma declaração, funções também podem ser criadas por uma expressão de função. Tal função pode ser **anônima**: sem nome depois de function. Por exemplo:
-
-```typescript
-// TypeScript
-const formatarEndereco = function (rua: string, cidade: string): string {
-    return `Endereço: ${rua}, ${cidade}`;
-};
-
-const endereco = formatarEndereco('Rua José de Alencar', 'Quixadá');
-console.log(endereco); // Saída: Endereço: Rua José de Alencar, Quixadá
-```
-
-No entanto, um nome pode ser fornecido com uma expressão de função e pode ser utilizado no interior da função para se referir a si mesma, ou em um debugger para identificar a função em stack traces:
-
-```typescript
-const fatorial = function fac(n: number): number {
-    //console.log(n); // descomente esta linha para acompanhar o n a cada execução
-    if (n === 0 || n === 1) return 1;
-    else return n * fac(n - 1);
-};
-
-console.log(fatorial(3)); // Saída: 6
-console.log(fatorial(3));
-```
-
-Diferente da função declarada com `function`, não é possível chamar a função de expressão antes da inicialização da função, que é guardada em um variável.
-
-```typescript
-console.log(square(5)); // Erro!
-var square = function (n) {
-  return n * n;
-};
-
-```
-
-### Escopo de Função
-
-Funções em JavaScript criam seu próprio escopo. Variáveis declaradas dentro de uma função não são acessíveis fora dela.
-
-```javascript
-function exemplo() {
-    const mensagem = 'Olá!';
-    return mensagem;
-}
-
-console.log(exemplo()); // "Olá!"
-console.log(mensagem); // Erro: mensagem não está definida
-```
-
-No entanto, uma função pode acessar todas variáveis e funções definida fora do escopo onde ela está definida.
-
-```typescript
-// TypeScript
-const mensagem = 'Olá!';
-
-function exemplo(nome: string): string {
-    return mensagem + nome;
-}
-
-console.log(exemplo()); // "Olá!"
-console.log(mensagem); // Agora não dá mais erro, pois está no mesmo escopo
-```
-
-Closures permitem que funções internas acessem variáveis de funções externas mesmo após a execução da função externa.
-
-Quando uma função é definida dentro de outra função, a função interna tem acesso às variáveis da função externa devido ao escopo léxico. Mesmo que a função externa termine sua execução, as variáveis dela permanecem disponíveis para a função interna, porque o JavaScript mantém uma referência ao ambiente onde a função foi criada.
-
-```typescript
-// TypeScript
-function criarContador(): () => number {
-    let contador = 0; // Variável da função externa
-
-    return function incrementar(): number {
-        // Função interna (closure)
-        contador++; // Acessa a variável da função externa
-        return contador;
-    };
-}
-
-const contador = criarContador(); // cria um closure
-console.log(contador()); // Saída: 1
-console.log(contador()); // Saída: 2
-console.log(contador()); // Saída: 3
-```
-
-### Objeto `arguments`
-
-Dentro de uma função, o objeto `arguments` contém todos os argumentos passados para ela.
-
-```javascript
-// JavaScript
-function somarTodos() {
-    let total = 0;
-    for (let i = 0; i < arguments.length; i++) {
-        total += arguments[i];
-    }
-    return total;
-}
-
-somarTodos(1, 2, 3); // Retorna 6
-```
-
-```javascript
-// TypeScript
-function somarTodos(...numeros: number[]): number {
-    let total = 0;
-    for (let i = 0; i < numeros.length; i++) {
-        total += numeros[i];
-    }
-    return total;
-}
-
-const resultado = somarTodos(1, 2, 3); // Retorna 6
-console.log(resultado);
-```
-
-#### Operador `...`
-
-Em TypeScript (e JavaScript), o operador ... é chamado de operador rest ou spread operator, dependendo do contexto em que é usado. Ele tem dois principais usos:
-
-1. Operador **Rest** (para coletar argumentos ou elementos):
-   Quando usado em parâmetros de função, ele permite que você colete um número variável de argumentos em um array. Como no exemplo acima, em que `...numeros` coleta todos os argumentos passados para a função em um array chamado numeros. O tipo number[] indica que o operador rest criará um array de números.
-
-2. Operador **Spread** (para espalhar elementos):
-   Quando usado em arrays ou objetos, ele permite que você espalhe os elementos ou propriedades. Como no exemplo abaixo:
-
-```typescript
-const numeros = [1, 2, 3];
-const maisNumeros = [...numeros, 4, 5];
-console.log(maisNumeros); // Saída: [1, 2, 3, 4, 5]
-//Aqui, ...numeros espalha os elementos do array numeros dentro do novo array maisNumeros.
-```
-
-### Parâmetros padrão
-
-Funções podem ter parâmetros com valores padrão:
-
-```javascript
-// TypeScript
-function saudar(nome: string = 'Visitante'): void {
-    console.log(`Olá, ${nome}!`);
-}
-
-saudar(); // "Olá, Visitante!"
-saudar('Lana'); // "Olá, Lana!"
-```
-
-### Parâmetros opcionais
-
-Por padrão, o TypeScript assumirá que todos os parâmetros são obrigatórios, mas eles podem ser explicitamente marcados como opcionais.
-
-```typescript
-// o operador `?` indica que o parâmetro `c` é optional
-function mostrarSoma(a: number, b: number, c?: number): void {
-    console.log(a + b + (c || 0));
-}
-
-mostrarSoma(1, 2); // 3
-mostrarSoma(1, 2, 3); // 6
-```
-
-## Funções de Seta (Arrow Functions)
-
-Introduzidas no ES6, as funções de seta oferecem uma sintaxe mais curta:
-
-```javascript
-// JavaScript
-const somar = (a, b) => a + b;
-console.log(somar(1, 2)); //3
-```
-
-```typescript
-// TypeScript
-const somar = (a: number, b: number): number => a + b;
-console.log(somar(1, 2)); //3
-```
-
-Se a função tiver apenas um parâmetro, os parênteses são opcionais:
-
-```javascript
-// JavaScript
-const quadrado = (x) => x * x;
-console.log(quadrado(3)); // Saída: 9
-```
-
-```typescript
-// TypeScript
-const quadrado = (x: number): number => x * x;
-console.log(quadrado(3)); // Saída: 9
-```
-
-Para arrow functions com múltiplas instruções, utilize chaves e a palavra-chave `return`:
-
-```javascript
-// JavaScript
-const somar = (a, b) => {
-    const resultado = a + b;
-    return resultado;
-};
-```
-
-### Sintaxe
-
-```javascript
-(param1, param2, ..., paramN) => expressão
-```
-
-Equivalente a:
-
-```javascript
-function(param1, param2, ..., paramN) {
-  return expressão;
+if (value) {
+    console.log('Este valor é truthy!');
+} else {
+    console.log('Este valor é falsy!');
 }
 ```
 
-### Retornando Objetos Literais
+## if...else
 
-Para retornar um objeto literal, envolva-o entre parênteses:
+A condicional if é uma estrutura condicional que executa a afirmação, dentro do bloco, se determinada condição for verdadeira. Se for falsa, executa as afirmações dentro de else.
 
-```javascript
-// JavaScript
-const criarPessoaMaisVelha = (nome, idade) => ({ nome, idade });
+```typescript
+if (condição1)
+   instrução1
+else if (condição2)
+   instrução2
+else if (condição3)
+   instrução3
+...
+else
+   instruçãoN
 ```
 
-Sem os parênteses, o JavaScript interpreta as chaves como o início de um bloco de código, não de um objeto.
+```typescript
+const idade = 18;
 
-### Exemplos Função Tradicional vs. Função de Seta
+if (idade < 18) {
+    console.log('Você é menor de idade.');
+} else if (idade === 18) {
+    console.log('Você acabou de atingir a maioridade.');
+} else {
+    console.log('Você é maior de idade.');
+}
+```
 
-```javascript
-// JavaScript
+## for
 
-// Função tradicional
-function dobrar(a) {
-    return a * 2;
+A instrução `for` cria um loop que consiste em três expressões opcionais, dentro de parênteses e separadas por ponto e vírgula, seguidas por uma declaração ou uma sequência de declarações executadas em sequência.
+
+#### Exemplo de for em TypeScript
+
+```typescript
+for (let i = 0; i < 5; i++) {
+    console.log(`O valor de i é: ${i}`);
+}
+```
+
+Todas as três expressões na condição do loop for são opcionais. Por exemplo, no bloco de inicialização, não é necessário inicializar variáveis:
+
+```typescript
+var i = 0;
+for (; i < 9; i++) {
+    console.log(i);
+    // more statements
+}
+```
+
+Assim como ocorre no bloco de inicialização, a condição também é opcional. Se você está omitindo essa expressão, você deve certificar-se de quebrar o loop no corpo para não criar um loop infinito.
+
+```typescript
+for (var i = 0; ; i++) {
+    console.log(i);
+    if (i > 3) break;
+    // more statements
+}
+```
+
+Você também pode omitir todos os três blocos. Novamente, certifique-se de usar uma instrução break no final do loop e também modificar (incrementar) uma variável, para que a condição do break seja verdadeira em algum momento.
+
+```typescript
+var i = 0;
+
+for (;;) {
+    if (i > 3) break;
+    console.log(i);
+    i++;
+}
+```
+
+### for...of
+
+O loop for...of percorre objetos iterativos (incluindo Array, Map, Set, o objeto arguments e assim por diante), chamando uma função personalizada com instruções a serem executadas para o valor de cada objeto distinto.
+
+```typescript
+let iterable = [10, 20, 30];
+
+for (let value of iterable) {
+    console.log(value);
+}
+// 10
+// 20
+// 30
+
+// Ao invés de let, você pode usar const se você não for modificar a variável dentro do bloco.
+```
+
+#### Iterando sobre uma String
+
+```typescript
+let iterable = 'boo';
+
+for (let value of iterable) {
+    console.log(value);
+}
+// "b"
+// "o"
+// "o"
+```
+
+### for...in
+
+O laço for...in interage sobre propriedades enumeradas de um objeto, na ordem original de inserção. O laço pode ser executado para cada propriedade distinta do objeto.
+
+A função seguinte toma como argumento um objeto. O laço for...in iterage sobre todos as propriedades enumeráveis do objeto e retorna uma string com o nome das propriedades e seus respectivos valores.
+
+```typescript
+//Objeto
+var obj = { a: 1, b: 2, c: 3 };
+
+//Para prop (propriedade) in obj (objeto) faça
+for (var prop in obj) {
+    console.log('obj.' + prop + ' = ' + obj[prop]);
 }
 
-// Função de seta
-const dobrar = (a) => a * 2;
+//A saída (output) deverá ser:
+// "obj.a = 1"
+// "obj.b = 2"
+// "obj.c = 3"
 ```
 
-```typescript
-// TypeScript
+### Diferença entre for...of e for...in
 
-// Função tradicional
-function dobrar(a: number): number {
-    return a * 2;
+O loop for...in irá iterar sobre todas as propriedades enumeráveis de um objeto. A sintaxe do for...of é específica para coleções, ao invés de todos os objetos.
+O exemplo a seguir mostra a diferença entre um loop for...of e um loop for...in.
+
+```typescript
+Object.prototype.objCustom = function () {};
+Array.prototype.arrCustom = function () {};
+
+let iterable = [3, 5, 7];
+iterable.foo = 'hello';
+
+for (let i in iterable) {
+    console.log(i); // escreve 0, 1, 2, "foo", "arrCustom", "objCustom"
 }
 
-// Função de seta
-const dobrarArrow = (a: number): number => a * 2;
+for (let i of iterable) {
+    console.log(i); // escreve 3, 5, 7
+}
 ```
+
+### forEach
+
+O método forEach() do Array executa uma dada função em cada elemento de um array. Exemplo:
+
+```typescript
+const array1 = ['a', 'b', 'c'];
+
+array1.forEach((element) => console.log(element));
+
+// Expected output: "a"
+// Expected output: "b"
+// Expected output: "c"
+```
+
+O callback (a arrow function que é parâmetro do forEach) é invocado com três argumentos:
+
+-   o valor do elemento
+-   o índice do elemento
+-   o array que está sendo percorrido
+
+Podemos usar os 3:
+
+```typescript
+function logArrayElements(element, index, array) {
+    console.log('a[' + index + '] = ' + element);
+}
+[2, 5, 9].forEach(logArrayElements);
+// logs:
+// a[0] = 2
+// a[1] = 5
+// a[2] = 9
+```
+
+### while
+
+A declaração while cria um laço que executa uma rotina especifica enquanto a condição de teste for avaliada como verdadeira. A condição é avaliada antes da execução da rotina. O seguinte laço while itera enquanto n é menor que três.
+
+```typescript
+var n = 0;
+var x = 0;
+
+while (n < 3) {
+    n++;
+    x += n;
+}
+```
+
+Cada iteração, o laço incrementa n e soma à x. Portanto, x e n assumem os seguintes valores:
+
+-   Depois da primeira passagem: n = 1 e x = 1
+-   Depois da segunda passagem: n = 2 e x = 3
+-   Depois da terceira passagem: n = 3 e x = 6
+
+Depois de completar a terceira passagem, a condição n < 3 não é mais verdadeira, então o laço termina.
+
+### do...while
+
+A declaração do...while cria um laço que executa uma declaração até que o teste da condição for falsa (false). A condição é avaliada depois que o bloco de código é executado, resultando que uma declaração seja executada pelo menos uma vez.
+
+No exemplo seguinte, o laço do...while soma pelo menos uma vez e executa novamente até i não ser menor que 5.
+
+```typescript
+var resultado = '';
+var i = 0;
+do {
+    i += 1;
+    resultado += i + ' ';
+    console.log(resultado);
+} while (i < 5);
+```
+
+### switch
+
+A condicional switch avalia uma expressão, combinando o valor da expressão para um cláusula case, e executa as instruções associadas ao case.
 
 ```javascript
-// JavaScript
-const processar = (a, b) => {
-    const resultado = a + b;
-    return resultado * 2;
-};
+const expr = 'Papayas';
+switch (expr) {
+    case 'Oranges':
+        console.log('Oranges are $0.59 a pound.');
+        break;
+    case 'Mangoes':
+    case 'Papayas':
+        console.log('Mangoes and papayas are $2.79 a pound.');
+        // Expected output: "Mangoes and papayas are $2.79 a pound."
+        break;
+    default:
+        console.log(`Sorry, we are out of ${expr}.`);
+}
 ```
 
-```typescript
-// TypeScript
-const processar = (a: number, b: number): number => {
-    const resultado = a + b;
-    return resultado * 2;
-};
-```
+#### Exemplo: O que acontece se eu esquecer um break?
 
-### Tipo Alias
+Se você esquecer um break então o script irá rodar a partir do caso onde o critério foi correspondido e irá rodar também o caso seguinte independentemente do critério ter sido correspondido ou não:
 
-Tipos de função podem ser especificados separadamente de funções com aliases de tipo.
-
-Esses tipos são escritos de forma semelhante às funções de seta. Leia mais sobre funções de seta aqui.
-
-```typescript
-//TypeScript
-type Zerar = (value: number) => number;
-const zerarValor: Zerar = (value) => 0;
+```javascript
+var foo = 0;
+switch (foo) {
+    case -1:
+        console.log('1 negativo');
+        break;
+    case 0: // foo é 0 então aqui o critério foi correspondido, então esse bloco vai rodar
+        console.log(0);
+    // NOTA: o break esquecido deveria estar aqui
+    case 1: // nenhuma instrução break em 'case 0:' então essa instrução vai rodar também
+        console.log(1);
+        break; // o programa encontra esse break então não vai continuar para o 'case 2:'
+    case 2:
+        console.log(2);
+        break;
+    default:
+        console.log('default');
+}
 ```
 
 ## Referências
 
-[Funções - Guia JavaScript | MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Functions)
-
-[Expressões de Função de Seta - Referência JavaScript | MDN](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-
-[Funções em TypeScript - W3Schools](https://www.w3schools.com/typescript/typescript_functions.php)
+-   [MDN Web Docs - Loop](https://developer.mozilla.org/en-US/docs/Glossary/Loop)
+-   [MDN Web Docs - Truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy)
+-   [MDN Web Docs - Falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy)
+-   [MDN Web Docs - if...else](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else)
+-   [MDN Web Docs - for](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for)
+-   [MDN Web Docs - for...in](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)
+-   [MDN Web Docs - while](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/while)
+-   [MDN Web Docs - do...while](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/do...while)
+-   [MDN Web Docs - switch](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch)
