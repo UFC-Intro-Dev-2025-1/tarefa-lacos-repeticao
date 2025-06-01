@@ -1,39 +1,30 @@
-// Strings Extra 1
+// Tarefa Extra 1: Testar bloco switch
+// Descrição da atividade:
+// 1. Crie uma função que recebe o nome do aluno e um número como parâmetro e utilize switch para verificar diferentes condições.
+// 2. A função deve imprimir mensagens diferentes com base na nota e no nome fornecidos. Vejo como ficaria para caso fosse a aluna "Lana":
+//     >70 - "Lana, você passou por média!"
+//     >40 e <70 - "Lana, você está na AF."
+//     >40 - "Lana, infelizmente você está reprovado."
+// 3. Teste a função com diferentes valores para garantir que todas as condições sejam verificadas corretamente.
 
-// Complete o código abaixo das funções para cumprir com o resultado esperado. Utilize os métodos para strings. Veja: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String
+// Adicione seu código aqui 👇 
 
-let frase =
-    'Palavras são, na minha nada humilde opinião, nossa fonte inesgotável de mgia.';
-
-function calcularComprimento(texto: string): number {
-    // Adicione seu código aqui 👇
+function verificarNotaSwitch(nome: string, nota: number): void {
+    switch (true) {
+        case nota > 70:
+            console.log(`${nome}, você passou por média!`);
+            break;
+        case nota > 40 && nota <= 70:
+            console.log(`${nome}, você está na AF.`);
+            break;
+        default:
+            console.log(`${nome}, infelizmente você está reprovado.`);
+    }
 }
 
-function contarPalavras(texto: string): number {
-    // Adicione seu código aqui 👇
-}
-
-function contemTrecho(texto: string, palavra: string): boolean {
-    // Adicione seu código aqui 👇
-}
-
-function substituirTrecho(antigo: string, novo: string): void {
-    // Adicione seu código aqui 👇
-}
-
-console.log(`Comprimento da frase: ${calcularComprimento(frase)}`); //77
-console.log(`A frase contem: ${contarPalavras(frase)} palavras`); // 12
-console.log(
-    `A frase contem a palavra "magia"? ${contemTrecho(frase, 'magia')}`
-); // false
-
-console.log('\n------- Corrigindo a palavra "magia"');
-substituirTrecho('mgia', 'magia');
-console.log('Frase corrigida: ' + frase); // true
-
-console.log(
-    `A frase contem a palavra "magia"? ${contemTrecho(frase, 'magia')}`
-);
+verificarNotaSwitch('Frida', 100); //Frida, você passou por média!
+verificarNotaSwitch('Pedro', 65); //Pedro, você está na AF.
+verificarNotaSwitch('Marcos', 33); // Marcos, infelizmente você está reprovado.
 
 // Comando para rodar este arquivo: npx tsx src/extra1.ts
 // Comando para verificar o TypeScript: npx eslint src/extra1.ts

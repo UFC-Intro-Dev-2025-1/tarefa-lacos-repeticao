@@ -1,43 +1,26 @@
-// Sistema de Caixa de Mercantil
+// Tarefa: Testar blocos de if e else
+// Descrição da atividade:
+// 1. Crie uma função que recebe o nome do aluno e um número como parâmetro e utilize blocos de if e else para verificar diferentes condições.
+// 2. A função deve imprimir mensagens diferentes com base na nota e no nome fornecidos. Vejo como ficaria para caso fosse a aluna "Lana":
+//     >70 - "Lana, você passou por média!"
+//     >40 e <70 - "Lana, você está na AF."
+//     >40 - "Lana, infelizmente você está reprovado."
+// 3. Teste a função com diferentes valores para garantir que todas as condições sejam verificadas corretamente.
 
-// Variáveis para armazenar os itens, o total e a quantidade de itens
-let itensRecibo = ''; // String para armazenar os itens do recibo, 1 por linha
-let valorTotal = 0.0; // Número para armazenar o valor total
-let quantidadeItens = 0; // Número para armazenar a quantidade de itens
+// Adicione seu código aqui 👇 
 
-// Função para adicionar um item ao recibo
-function adicionarItem(nome: string, preco: number): void {
-    itensRecibo += `- ${nome}: R$${preco.toFixed(2)}\n`; // Adiciona o item à string
-    valorTotal += preco; // Soma o preço ao valor total
-    quantidadeItens++; // Incrementa a quantidade de itens
+function verificarNota(nome: string, nota: number): void {
+    if (nota > 70) {
+        console.log(`${nome}, você passou por média!`);
+    } else if (nota > 40 && nota <= 70) {
+        console.log(`${nome}, você está na AF.`);
+    } else {
+        console.log(`${nome}, infelizmente você está reprovado.`);
+    }
 }
 
-// Função para reiniciar a compra
-function reiniciarCompra(): void {
-    itensRecibo = ''; // Reseta os itens do recibo
-    valorTotal = 0.0; // Reseta o valor total
-    quantidadeItens = 0; // Reseta a quantidade de itens
-    console.log('Compra reiniciada. Todos os itens foram removidos.');
-}
+verificarNota('Frida', 100); //Frida, você passou por média!
+verificarNota('Pedro', 65); //Pedro, você está na AF.
+verificarNota('Marcos', 33); // Marcos, infelizmente você está reprovado.
 
-// Função para exibir o recibo
-function exibirRecibo(): void {
-    console.log('Recibo:');
-    console.log(itensRecibo || 'Nenhum item no recibo.'); // Exibe os itens ou mensagem padrão
-    console.log(`Quantidade de itens: ${quantidadeItens}`); // Exibe a quantidade de itens
-    console.log(`Total: R$${valorTotal.toFixed(2)}`); // Exibe o valor total
-}
-
-// Exemplo de uso:
-// Adicionar itens ao recibo
-adicionarItem('Arroz', 20.5);
-adicionarItem('Feijão', 10.0);
-exibirRecibo();
-
-// Reiniciar a compra
-reiniciarCompra();
-adicionarItem('Macarrão', 5.75);
-exibirRecibo();
-
-// para rodar o código, use o comando:
 // npm run build
