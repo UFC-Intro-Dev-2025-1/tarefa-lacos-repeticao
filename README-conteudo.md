@@ -15,7 +15,7 @@
 
 ## Definindo Estruturas de Controle
 
-Um loop é uma estrutura que permite executar repetidamente um bloco de código enquanto uma condição é verdadeira. Exemplos incluem `for`, `while`, e `do...while`. [Leia mais](https://developer.mozilla.org/en-US/docs/Glossary/Loop).
+Um loop é uma estrutura que permite executar repetidamente um bloco de código enquanto uma condição é verdadeira. Exemplos incluem `for`, `while`, e `do...while`.
 
 ### Truthy e Falsy
 
